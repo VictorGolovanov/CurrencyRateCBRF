@@ -27,11 +27,24 @@ public class MainActivity extends AppCompatActivity {
     public void getRate(View view) {
         EditText editText = findViewById(R.id.editText);
         String value = editText.getText().toString();
-        Currency originalCurrency = Currency.USD;
-        Currency targetCurrency = Currency.RUB;
+        if (isNumber(value)) {
+            Currency originalCurrency = Currency.USD;
+            Currency targetCurrency = Currency.RUB;
 
-        double ratio = service.getCurrencyRatio(originalCurrency, targetCurrency);
+            double ratio = service.getCurrencyRatio(originalCurrency, targetCurrency);
 
-        System.out.println(ratio);
+            double doubleValue = Double.parseDouble(value);
+            double result = ratio * doubleValue;
+            System.out.println(result);
+        }
+    }
+
+    private static boolean isNumber(String str) {
+        try {
+            Double.parseDouble(str);
+            return true;
+        } catch (Exception e) {
+            return false;
+        }
     }
 }
