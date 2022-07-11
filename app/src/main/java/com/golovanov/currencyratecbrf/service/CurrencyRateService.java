@@ -9,4 +9,6 @@ public interface CurrencyRateService {
     static CurrencyRateService getInstance() {
         return new CbRFCurrencyConversionService();
     }
+
+    void sendRequest(String date);
 }

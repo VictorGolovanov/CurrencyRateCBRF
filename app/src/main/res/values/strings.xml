@@ -1,3 +1,8 @@
 <resources>
     <string name="app_name">CurrencyRateCBRF</string>
+    <string name="get_result_button">know rate</string>
+    <string name="choose_original_currency">Choose original currency</string>
+    <string name="choose_target_currency">Choose target currency</string>
+    <string name="result">Result</string>
+    <string name="enter_number">Enter number</string>
 </resources>
