@@ -2,9 +2,15 @@ package com.golovanov.currencyratecbrf;
 
 import androidx.appcompat.app.AppCompatActivity;
 
+import android.annotation.SuppressLint;
 import android.os.Bundle;
+import android.view.Gravity;
 import android.view.View;
+import android.view.ViewGroup;
+import android.widget.ArrayAdapter;
 import android.widget.EditText;
+import android.widget.Spinner;
+import android.widget.TextView;
 
 import com.golovanov.currencyratecbrf.entity.Currency;
 import com.golovanov.currencyratecbrf.service.CurrencyRateService;
@@ -15,6 +21,7 @@ import java.util.Date;
 public class MainActivity extends AppCompatActivity {
 
     private final static CurrencyRateService service = CurrencyRateService.getInstance();
+    @SuppressLint("SimpleDateFormat")
     private static final SimpleDateFormat currentDate = new SimpleDateFormat("dd/MM/yyyy");
 
     @Override
@@ -22,20 +29,56 @@ public class MainActivity extends AppCompatActivity {
         super.onCreate(savedInstanceState);
         setContentView(R.layout.activity_main);
         service.sendRequest(currentDate.format(new Date()));
+
+        ArrayAdapter<Currency> currencyAdapter = new ArrayAdapter<Currency>(
+                this, android.R.layout.simple_spinner_item, Currency.values()) {
+            @Override
+            public View getView(int position, View convertView, ViewGroup parent)
+            {
+                return setCentered(super.getView(position, convertView, parent));
+            }
+
+            @Override
+            public View getDropDownView(int position, View convertView, ViewGroup parent)
+            {
+                return setCentered(super.getDropDownView(position, convertView, parent));
+            }
+
+            private View setCentered(View view)
+            {
+                TextView textView = (TextView)view.findViewById(android.R.id.text1);
+                textView.setGravity(Gravity.CENTER);
+                return view;
+            }
+        };
+        currencyAdapter.setDropDownViewResource(android.R.layout.simple_spinner_dropdown_item);
+
+        Spinner originalCurrency = findViewById(R.id.originalCurrency);
+        originalCurrency.setAdapter(currencyAdapter);
+
+        Spinner targetCurrency = findViewById(R.id.targetCurrency);
+        targetCurrency.setAdapter(currencyAdapter);
     }
 
     public void getRate(View view) {
         EditText editText = findViewById(R.id.editText);
         String value = editText.getText().toString();
         if (isNumber(value)) {
-            Currency originalCurrency = Currency.USD;
-            Currency targetCurrency = Currency.RUB;
+            Spinner original = findViewById(R.id.originalCurrency);
+            Spinner target = findViewById(R.id.targetCurrency);
+            Currency originalCurrency = (Currency) original.getSelectedItem();
+            Currency targetCurrency = (Currency) target.getSelectedItem();
+            TextView textView = findViewById(R.id.result);
 
             double ratio = service.getCurrencyRatio(originalCurrency, targetCurrency);
 
             double doubleValue = Double.parseDouble(value);
             double result = ratio * doubleValue;
-            System.out.println(result);
+
+            @SuppressLint("DefaultLocale")
+            String totalResult = String.format("%4.2f %s is %4.2f %s", doubleValue, originalCurrency, result, targetCurrency);
+            textView.setText(totalResult);
+            System.out.println(totalResult);
         }
     }
 
