@@ -48,6 +48,7 @@ public class CbRFCurrencyConversionService implements CurrencyRateService {
     private static final String VALUTE = "Valute";
     private static final String CHAR_CODE = "CharCode";
     private static final String VALUE = "Value";
+    private static final String NOMINAL = "Nominal";
     private static final String ONE = "1";
 
     @Override
@@ -70,8 +71,8 @@ public class CbRFCurrencyConversionService implements CurrencyRateService {
                     Optional<CurrencyValue> targetValue = values.stream()
                             .filter(v -> v.getCharCode().equals(target.toString())).findFirst();
                     if (originalValue.isPresent() && targetValue.isPresent()) {
-                        return Double.parseDouble(originalValue.get().getValue().replace(",", "."))
-                                / Double.parseDouble(targetValue.get().getValue().replace(",", "."));
+                        return Double.parseDouble(originalValue.get().getValue())
+                                / Double.parseDouble(targetValue.get().getValue());
                     }
                 }
             }
@@ -109,8 +110,10 @@ public class CbRFCurrencyConversionService implements CurrencyRateService {
                     if (node.getNodeType() == Node.ELEMENT_NODE) {
                         Element element = (Element) node;
                         String charCode = element.getElementsByTagName(CHAR_CODE).item(0).getFirstChild().getNodeValue();
-                        String value = element.getElementsByTagName(VALUE).item(0).getFirstChild().getNodeValue();
-                        values.add(new CurrencyValue(charCode, value));
+                        String nominal = element.getElementsByTagName(NOMINAL).item(0).getFirstChild().getNodeValue();
+                        String value = element.getElementsByTagName(VALUE).item(0).getFirstChild().getNodeValue().replace(",", ".");
+                        String valueForOne = String.valueOf((Double.parseDouble(value) / Double.parseDouble(nominal)));
+                        values.add(new CurrencyValue(charCode, valueForOne));
                     }
                 }
                 values.add(new CurrencyValue(Currency.RUB.toString(), ONE));

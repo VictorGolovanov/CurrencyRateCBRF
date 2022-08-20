@@ -33,19 +33,16 @@ public class MainActivity extends AppCompatActivity {
         ArrayAdapter<Currency> currencyAdapter = new ArrayAdapter<Currency>(
                 this, android.R.layout.simple_spinner_item, Currency.values()) {
             @Override
-            public View getView(int position, View convertView, ViewGroup parent)
-            {
+            public View getView(int position, View convertView, ViewGroup parent) {
                 return setCentered(super.getView(position, convertView, parent));
             }
 
             @Override
-            public View getDropDownView(int position, View convertView, ViewGroup parent)
-            {
+            public View getDropDownView(int position, View convertView, ViewGroup parent) {
                 return setCentered(super.getDropDownView(position, convertView, parent));
             }
 
-            private View setCentered(View view)
-            {
+            private View setCentered(View view) {
                 TextView textView = (TextView)view.findViewById(android.R.id.text1);
                 textView.setGravity(Gravity.CENTER);
                 return view;
@@ -86,6 +83,15 @@ public class MainActivity extends AppCompatActivity {
         try {
             Double.parseDouble(str);
             return true;
+        } catch (Exception e) {
+            return false;
+        }
+    }
+
+    private static boolean hasConnection() {
+        try {
+            String command = "ping -c 1 google.com";
+            return (Runtime.getRuntime().exec(command).waitFor() == 0);
         } catch (Exception e) {
             return false;
         }

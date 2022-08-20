@@ -1,8 +1,9 @@
 <resources>
-    <string name="app_name">CurrencyRateCBRF</string>
-    <string name="get_result_button">know rate</string>
-    <string name="choose_original_currency">Choose original currency</string>
-    <string name="choose_target_currency">Choose target currency</string>
-    <string name="result">Result</string>
-    <string name="enter_number">Enter number</string>
+    <string name="app_name">Курс валют по ЦБ РФ</string>
+    <string name="get_result_button">Узнать!</string>
+    <string name="choose_original_currency">Выберите исходную валюту</string>
+    <string name="choose_target_currency">Выберите целевую валюту</string>
+    <string name="result">Результат</string>
+    <string name="enter_number">Введите сумму</string>
+    <string name="no_internet_connection_try_to_reconnect_and_then_restart_app">No Internet connection. try to reconnect and then restart app</string>
 </resources>
