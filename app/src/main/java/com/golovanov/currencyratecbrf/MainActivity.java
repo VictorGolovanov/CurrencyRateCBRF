@@ -3,6 +3,7 @@ package com.golovanov.currencyratecbrf;
 import androidx.appcompat.app.AppCompatActivity;
 
 import android.annotation.SuppressLint;
+import android.content.Context;
 import android.os.Bundle;
 import android.view.Gravity;
 import android.view.View;
@@ -16,7 +17,9 @@ import com.golovanov.currencyratecbrf.entity.Currency;
 import com.golovanov.currencyratecbrf.service.CurrencyRateService;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.Date;
+import java.util.List;
 
 public class MainActivity extends AppCompatActivity {
 
@@ -24,14 +27,26 @@ public class MainActivity extends AppCompatActivity {
     @SuppressLint("SimpleDateFormat")
     private static final SimpleDateFormat currentDate = new SimpleDateFormat("dd/MM/yyyy");
 
+    @SuppressLint("StaticFieldLeak")
+    private static Context context;
+
+    public static Context getContext() {
+        return context;
+    }
+
     @Override
     protected void onCreate(Bundle savedInstanceState) {
         super.onCreate(savedInstanceState);
+        context = this;
         setContentView(R.layout.activity_main);
         service.sendRequest(currentDate.format(new Date()));
+        List<String> names = new ArrayList<>();
+        for (Currency value : Currency.values()) {
+            names.add(value.getName());
+        }
 
-        ArrayAdapter<Currency> currencyAdapter = new ArrayAdapter<Currency>(
-                this, android.R.layout.simple_spinner_item, Currency.values()) {
+        ArrayAdapter<String> currencyAdapter = new ArrayAdapter<String>(
+                this, android.R.layout.simple_spinner_item, names/*Currency.values()*/) {
             @Override
             public View getView(int position, View convertView, ViewGroup parent) {
                 return setCentered(super.getView(position, convertView, parent));
@@ -63,8 +78,8 @@ public class MainActivity extends AppCompatActivity {
         if (isNumber(value)) {
             Spinner original = findViewById(R.id.originalCurrency);
             Spinner target = findViewById(R.id.targetCurrency);
-            Currency originalCurrency = (Currency) original.getSelectedItem();
-            Currency targetCurrency = (Currency) target.getSelectedItem();
+            Currency originalCurrency = Currency.valueOf(original.getSelectedItem().toString().substring(0, 3));
+            Currency targetCurrency = Currency.valueOf(target.getSelectedItem().toString().substring(0, 3));
             TextView textView = findViewById(R.id.result);
 
             double ratio = service.getCurrencyRatio(originalCurrency, targetCurrency);

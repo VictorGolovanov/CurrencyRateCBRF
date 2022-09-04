@@ -1,10 +1,8 @@
 package com.golovanov.currencyratecbrf.service;
 
 import android.annotation.SuppressLint;
-import android.os.Build;
 
 import androidx.annotation.NonNull;
-import androidx.annotation.RequiresApi;
 
 import com.golovanov.currencyratecbrf.entity.Currency;
 import com.golovanov.currencyratecbrf.entity.CurrencyValue;
@@ -14,10 +12,7 @@ import org.w3c.dom.Element;
 import org.w3c.dom.Node;
 import org.w3c.dom.NodeList;
 
-import java.io.BufferedReader;
 import java.io.IOException;
-import java.io.InputStreamReader;
-import java.net.HttpURLConnection;
 import java.net.URL;
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
