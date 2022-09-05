@@ -28,7 +28,7 @@ public enum Currency {
     KZT(R.string.kzt_name),
     CAD(R.string.cad_name),
     KGS(R.string.kgs_name),
-    MDL(R.string.mdl),
+    MDL(R.string.mdl_name),
     NOK(R.string.ndk_name),
     PLN(R.string.pln_name),
     RON(R.string.ron_name),
